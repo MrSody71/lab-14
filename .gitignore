@@ -218,7 +218,6 @@ $RECYCLE.BIN/
 
 # Project-specific
 /data/
-/bench/results/
 *.parquet
 *.arrow
 .env

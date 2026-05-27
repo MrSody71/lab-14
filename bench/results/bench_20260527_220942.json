@@ -1,0 +1,39 @@
+{
+  "timestamp": "2026-05-27T22:09:42.657240",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python_version": "3.14.5",
+  "mock_url": "http://localhost:8081",
+  "cities_count": 10,
+  "results": [
+    {
+      "name": "python-asyncio",
+      "total_requests": 150,
+      "successful": 150,
+      "failed": 0,
+      "total_time_sec": 0.039,
+      "throughput_rps": 3867.45,
+      "avg_latency_ms": 1.65,
+      "p50_latency_ms": 0.88,
+      "p95_latency_ms": 12.19,
+      "p99_latency_ms": 12.85,
+      "min_latency_ms": 0.59,
+      "max_latency_ms": 16.55,
+      "timestamp": "2026-05-27T22:09:17.549465"
+    },
+    {
+      "name": "go",
+      "total_requests": 150,
+      "successful": 150,
+      "failed": 0,
+      "total_time_sec": 25.107,
+      "throughput_rps": 5.97,
+      "avg_latency_ms": 0,
+      "p50_latency_ms": 0,
+      "p95_latency_ms": 0,
+      "p99_latency_ms": 0,
+      "min_latency_ms": 0,
+      "max_latency_ms": 0,
+      "timestamp": "2026-05-27T22:09:42.656681"
+    }
+  ]
+}
