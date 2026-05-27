@@ -38,7 +38,9 @@ TODO: заполним на этапе X
 
 ## Бенчмарки
 
-TODO: заполним на этапе X
+См. [bench/README.md](bench/README.md) — Go vs Python asyncio, throughput и latency.
+
+Последний результат: **Python asyncio 3867 req/s** на локальном мок-сервере OWM (15 раундов × 10 городов).
 
 ## Prompt log
 
