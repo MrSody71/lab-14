@@ -1,0 +1,24 @@
+# Prod: больше реплик, агрессивнее масштабирование
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-collector
+  namespace: weather-pipeline
+spec:
+  replicas: 3
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: go-collector-hpa
+  namespace: weather-pipeline
+spec:
+  minReplicas: 2
+  maxReplicas: 10
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 15
+      policies:
+        - type: Pods
+          value: 2
+          periodSeconds: 30

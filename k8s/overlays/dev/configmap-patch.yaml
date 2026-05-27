@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: weather-config
+  namespace: weather-pipeline
+data:
+  POLL_INTERVAL_SEC: "5"
+  LOG_LEVEL: "debug"
+  TOTAL_SHARDS: "1"

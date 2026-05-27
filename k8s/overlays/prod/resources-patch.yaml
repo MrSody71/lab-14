@@ -1,0 +1,18 @@
+# Prod: полные resource limits
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-collector
+  namespace: weather-pipeline
+spec:
+  template:
+    spec:
+      containers:
+        - name: collector
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "128Mi"
+            limits:
+              cpu: "1000m"
+              memory: "512Mi"

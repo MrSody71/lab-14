@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: weather-config
+  namespace: weather-pipeline
+data:
+  POLL_INTERVAL_SEC: "10"
+  LOG_LEVEL: "warn"
+  BATCH_SIZE: "100"
