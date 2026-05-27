@@ -1,0 +1,1 @@
+Replace with: kubectl get pods -n weather-pipeline

@@ -1,0 +1,1 @@
+Replace with: kubectl get hpa -n weather-pipeline
