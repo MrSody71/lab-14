@@ -34,7 +34,24 @@ TODO: заполним на этапе X
 
 ## Развёртывание в Kubernetes
 
-TODO: заполним на этапе X
+```bash
+# Создать кластер и задеплоить
+make k8s-up
+
+# Посмотреть состояние
+make k8s-status
+
+# Наблюдать за HPA
+kubectl get hpa -n weather-pipeline -w
+
+# Нагрузочный тест
+make k8s-load-test
+
+# Удалить кластер
+make k8s-down
+```
+
+Подробнее: [docs/kubernetes.md](docs/kubernetes.md)
 
 ## Бенчмарки
 

@@ -62,11 +62,24 @@ docker-down: ## Остановить инфраструктуру
 docker-logs: ## Логи всех сервисов
 	docker compose logs -f
 
-k8s-up: ## Развернуть в Kubernetes (заглушка, появится в этапе 7)
-	@echo "TODO: implemented in stage 7"
+k8s-up: ## Создать kind-кластер и задеплоить dev-оверлей
+	bash k8s/scripts/setup-kind.sh
 
-k8s-down: ## Удалить из Kubernetes (заглушка)
-	@echo "TODO: implemented in stage 7"
+k8s-down: ## Удалить kind-кластер
+	bash k8s/scripts/teardown-kind.sh
+
+k8s-status: ## Состояние подов и HPA
+	kubectl get all -n weather-pipeline
+	kubectl get hpa -n weather-pipeline
+
+k8s-logs: ## Логи go-collector
+	kubectl logs -n weather-pipeline -l app=go-collector -f
+
+k8s-load-test: ## Нагрузочный тест для проверки HPA
+	bash k8s/scripts/load-test.sh
+
+k8s-diff: ## Посмотреть diff без применения
+	kubectl diff -k k8s/overlays/dev/ || true
 
 clean: ## Очистить артефакты сборки
 	go clean -cache -testcache
@@ -77,4 +90,4 @@ clean: ## Очистить артефакты сборки
 
 .PHONY: help bootstrap build-go build-rust build test-go test-rust test-py test \
         lint-go lint-rust lint-py lint fmt docker-up docker-down docker-logs \
-        k8s-up k8s-down clean
+        k8s-up k8s-down k8s-status k8s-logs k8s-load-test k8s-diff clean
