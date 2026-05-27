@@ -83,6 +83,23 @@ services:
     networks: [weather-net]
     restart: unless-stopped
 
+  mock-owm:
+    build:
+      context: ./mock-owm
+    container_name: weather-mock-owm
+    ports:
+      - "8081:8081"
+    environment:
+      MOCK_OWM_ADDR: ":8081"
+      MOCK_OWM_SEED: "42"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O- http://localhost:8081/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [weather-net]
+    restart: unless-stopped
+
 networks:
   weather-net:
     driver: bridge
