@@ -9,6 +9,8 @@ dependencies = [
     "rich",
     "typer",
     "pydantic",
+    "matplotlib",
+    "numpy",
 ]
 
 [dependency-groups]
