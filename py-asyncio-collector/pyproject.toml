@@ -15,6 +15,7 @@ dependencies = [
 dev = [
     "pytest",
     "pytest-asyncio",
+    "pytest-aiohttp",
     "pytest-benchmark",
     "ruff",
     "mypy",
@@ -37,3 +38,4 @@ select = ["E", "F", "I", "N", "UP", "B", "SIM", "RUF"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+asyncio_mode = "auto"
