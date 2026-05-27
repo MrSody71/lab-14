@@ -1,0 +1,3 @@
+$ kubectl get hpa -n weather-pipeline
+NAME                   REFERENCE                     TARGETS           MINPODS   MAXPODS   REPLICAS   AGE
+dev-go-collector-hpa   Deployment/dev-go-collector   12%/60%, 8%/70%   1         3         1          2m34s

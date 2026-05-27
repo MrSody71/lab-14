@@ -1,0 +1,5 @@
+$ kubectl get pods -n weather-pipeline
+NAME                                    READY   STATUS    RESTARTS   AGE
+dev-arrow-server-6d8f9b7c4-xk2pj        1/1     Running   0          2m34s
+dev-go-collector-7b5dc9f86-mq8nt        1/1     Running   0          2m34s
+dev-mock-owm-84c6d5f9b-r3wlz            1/1     Running   0          2m34s
