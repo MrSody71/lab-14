@@ -1,0 +1,12 @@
+.git
+.github
+**/.venv
+**/node_modules
+**/target
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+**/.mypy_cache
+**/bench/results
+**/data
+docs/screenshots
