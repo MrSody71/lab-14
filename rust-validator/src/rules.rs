@@ -53,10 +53,16 @@ pub struct ValidationResult {
 
 impl ValidationResult {
     pub fn ok() -> Self {
-        Self { is_valid: true, errors: vec![] }
+        Self {
+            is_valid: true,
+            errors: vec![],
+        }
     }
     pub fn fail(errors: Vec<ValidationError>) -> Self {
-        Self { is_valid: false, errors }
+        Self {
+            is_valid: false,
+            errors,
+        }
     }
 }
 
@@ -72,8 +78,7 @@ pub struct WeatherInput {
 }
 
 /// Валидирует одну запись по заданным правилам.
-pub fn validate(input: &WeatherInput, bounds: &Bounds,
-                now_unix: i64) -> ValidationResult {
+pub fn validate(input: &WeatherInput, bounds: &Bounds, now_unix: i64) -> ValidationResult {
     let mut errors = Vec::new();
 
     // 1. city не пустой
@@ -263,11 +268,13 @@ mod tests {
     fn test_validate_batch() {
         let inputs = vec![
             valid_input(),
-            WeatherInput { temperature: 999.0, ..valid_input() },
+            WeatherInput {
+                temperature: 999.0,
+                ..valid_input()
+            },
             valid_input(),
         ];
-        let (valid, invalid, errors) =
-            validate_batch(&inputs, &Bounds::default(), now());
+        let (valid, invalid, errors) = validate_batch(&inputs, &Bounds::default(), now());
         assert_eq!(valid, 2);
         assert_eq!(invalid, 1);
         assert_eq!(errors[0].0, 1);
