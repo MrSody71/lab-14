@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: weather-config
+  namespace: weather-pipeline
+data:
+  CITIES: >-
+    Moscow,Saint-Petersburg,Novosibirsk,Yekaterinburg,
+    Kazan,Stockholm,Berlin,London,New-York,Tokyo
+  POLL_INTERVAL_SEC: "10"
+  WINDOW_SIZE_SEC: "60"
+  KAFKA_TOPIC: "weather.raw"
+  NATS_SUBJECT: "weather.raw"
+  ARROW_FLIGHT_ADDR: ":8815"
+  LOG_LEVEL: "info"
+  BATCH_SIZE: "50"
