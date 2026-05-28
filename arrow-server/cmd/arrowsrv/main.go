@@ -6,6 +6,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"syscall"
 	"time"
 
 	"github.com/IBM/sarama"
@@ -78,7 +79,7 @@ func main() {
 		os.Exit(1)
 	}
 	srv.RegisterFlightService(flightSvc)
-	srv.SetShutdownOnSignals(os.Interrupt)
+	srv.SetShutdownOnSignals(os.Interrupt, syscall.SIGTERM)
 
 	logger.Info("arrow-server starting", "addr", addr, "max_records", maxRecords)
 

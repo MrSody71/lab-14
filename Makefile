@@ -24,7 +24,7 @@ test-go: ## Тесты Go
 	go test ./go-collector/... ./arrow-server/... ./mock-owm/... -race -count=1
 
 test-rust: ## Тесты Rust
-	cd rust-validator && cargo test
+	cd rust-validator && PYO3_PYTHON=$$(uv python find) cargo test
 
 test-py: ## Тесты Python
 	cd py-analyzer && uv run pytest
