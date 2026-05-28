@@ -180,10 +180,16 @@ mod tests {
         };
         assert!(err.__repr__().contains("city"));
 
-        let ok = PyValidationResult { is_valid: true, errors: vec![] };
+        let ok = PyValidationResult {
+            is_valid: true,
+            errors: vec![],
+        };
         assert_eq!(ok.__repr__(), "ValidationResult(valid)");
 
-        let bad = PyValidationResult { is_valid: false, errors: vec![err] };
+        let bad = PyValidationResult {
+            is_valid: false,
+            errors: vec![err],
+        };
         assert!(bad.__repr__().contains("1 errors"));
     }
 }

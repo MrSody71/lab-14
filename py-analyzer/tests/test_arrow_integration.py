@@ -26,33 +26,39 @@ def arrow_server_process():
     """Запускает arrow-server, ждёт готовности, останавливает после тестов."""
     if not ARROW_SERVER_BIN.exists():
         pytest.skip(
-            f"Arrow server binary not found: {ARROW_SERVER_BIN}. "
-            f"Run: go build -o arrow-server/arrowsrv "
-            f"./arrow-server/cmd/arrowsrv"
+            f"Arrow server binary not found: {ARROW_SERVER_BIN}"
         )
 
-    env = os.environ.copy()
+    # Проверяем что файл исполняемый
+    import os as _os
+    if not _os.access(str(ARROW_SERVER_BIN), _os.X_OK):
+        pytest.skip(
+            f"Arrow server binary not executable: {ARROW_SERVER_BIN}. "
+            "Run: chmod +x arrow-server/arrowsrv"
+        )
+
+    env = _os.environ.copy()
     env["ARROW_FLIGHT_ADDR"] = ":18815"
     env["ARROW_MAX_RECORDS"] = "100"
 
-    proc = subprocess.Popen(
+    import subprocess as _subprocess
+    proc = _subprocess.Popen(
         [str(ARROW_SERVER_BIN)],
         env=env,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
+        stdout=_subprocess.PIPE,
+        stderr=_subprocess.STDOUT,
     )
-    # Ждём до 2 секунд пока сервер поднимется
     time.sleep(2)
     if proc.poll() is not None:
         out, _ = proc.communicate()
-        pytest.skip(f"Arrow server failed to start: {out.decode()}")
-
+        pytest.skip(
+            f"Arrow server failed to start: {out.decode()}"
+        )
     yield proc
-
     proc.terminate()
     try:
         proc.wait(timeout=5)
-    except subprocess.TimeoutExpired:
+    except _subprocess.TimeoutExpired:
         proc.kill()
 
 

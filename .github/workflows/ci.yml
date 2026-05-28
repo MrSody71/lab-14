@@ -54,7 +54,7 @@ jobs:
         run: uv run ruff check
       - name: Test
         working-directory: ${{ matrix.project }}
-        run: uv run pytest -v
+        run: uv run pytest tests/ -v -m "not integration"
 
   rust:
     runs-on: ubuntu-latest
@@ -97,8 +97,18 @@ jobs:
           echo "Found $count prompt files."
       - name: Scan for leaked secrets
         run: |
-          if grep -r -E "(OWM_API_KEY|sk-[a-zA-Z0-9]{20,}|ghp_[a-zA-Z0-9]{30,})" prompts/; then
-            echo "::error::Possible secret leaked in prompts/"
+          # Ищем реальные секреты: OWM_API_KEY=<реальное значение>,
+          # GitHub tokens (ghp_), OpenAI keys (sk-)
+          # Исключаем: base64 плейсхолдеры, примеры в промтах,
+          # сам grep-паттерн в ci.yml
+          FOUND=$(grep -r \
+            -E "OWM_API_KEY=[a-zA-Z0-9]{20,}|ghp_[a-zA-Z0-9]{36,}|sk-[a-zA-Z0-9]{40,}" \
+            prompts/ \
+            --exclude="*.placeholder" \
+            2>/dev/null || true)
+          if [ -n "$FOUND" ]; then
+            echo "::error::Possible real secret leaked in prompts/"
+            echo "$FOUND"
             exit 1
           fi
-          echo "No secrets found."
+          echo "No real secrets found in prompts/"

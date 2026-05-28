@@ -45,8 +45,7 @@ metadata:
     note: "placeholder values — replace before production deploy"
 type: Opaque
 data:
-  # echo -n "placeholder" | base64
-  OWM_API_KEY: cGxhY2Vob2xkZXI=
+  OWM_API_KEY: <base64-encoded-placeholder>
 
 === k8s/base/mock-owm-deployment.yaml ===
 
