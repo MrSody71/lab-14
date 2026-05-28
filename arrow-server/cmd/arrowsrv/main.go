@@ -90,14 +90,14 @@ func main() {
 			logger.Warn("kafka consumer unavailable", "err", err)
 			return
 		}
-		defer consumer.Close()
+		defer func() { _ = consumer.Close() }()
 
 		partConsumer, err := consumer.ConsumePartition(kafkaTopic, 0, sarama.OffsetNewest)
 		if err != nil {
 			logger.Warn("kafka consume partition failed", "err", err)
 			return
 		}
-		defer partConsumer.Close()
+		defer func() { _ = partConsumer.Close() }()
 
 		logger.Info("kafka consumer started", "topic", kafkaTopic)
 		for msg := range partConsumer.Messages() {

@@ -44,7 +44,7 @@ func (c *Client) FetchWeather(ctx context.Context, city, shardID string) (Weathe
 	if err != nil {
 		return WeatherReading{}, fmt.Errorf("fetch %s: %w", city, err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode == http.StatusNotFound {
 		return WeatherReading{}, fmt.Errorf("city not found: %s", city)
@@ -78,7 +78,7 @@ func (c *Client) FetchBatch(ctx context.Context, cities []string,
 	if err != nil {
 		return nil, []error{fmt.Errorf("fetch batch: %w", err)}
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	var owmList []OWMResponse
 	if err := json.NewDecoder(resp.Body).Decode(&owmList); err != nil {

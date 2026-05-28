@@ -110,7 +110,7 @@ func (s *FlightServer) DoGet(
 	defer rec.Release()
 
 	writer := flight.NewRecordWriter(stream, ipc.WithSchema(WeatherSchema))
-	defer writer.Close()
+	defer func() { _ = writer.Close() }()
 
 	return writer.Write(rec)
 }
