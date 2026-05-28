@@ -100,6 +100,57 @@ services:
     networks: [weather-net]
     restart: unless-stopped
 
+  py-analyzer:
+    build:
+      context: ./py-analyzer
+    container_name: weather-analyzer
+    environment:
+      OWM_MOCK_URL: "http://mock-owm:8081"
+      KAFKA_BROKERS: "redpanda:9093"
+      NATS_URL: "nats://nats:4222"
+      PARQUET_PATH: "/data/weather.parquet"
+      FLUSH_EVERY: "5"
+    volumes:
+      - weather-data:/data
+    depends_on:
+      redpanda:
+        condition: service_healthy
+      nats:
+        condition: service_healthy
+      mock-owm:
+        condition: service_healthy
+    networks: [weather-net]
+    restart: unless-stopped
+    command: ["uv", "run", "python", "-m",
+              "analyzer.pipeline", "--mock"]
+
+  dashboard:
+    build:
+      context: ./dashboard
+    container_name: weather-dashboard
+    ports:
+      - "8501:8501"
+    environment:
+      PARQUET_PATH: "/data/weather.parquet"
+      KAFKA_BROKERS: "redpanda:9093"
+      NATS_URL: "nats://nats:4222"
+    volumes:
+      - weather-data:/data
+    depends_on:
+      - py-analyzer
+    networks: [weather-net]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL",
+             "wget -q -O- http://localhost:8501/_stcore/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
 networks:
   weather-net:
     driver: bridge
+
+volumes:
+  weather-data:
+    driver: local

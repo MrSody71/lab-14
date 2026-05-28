@@ -26,7 +26,30 @@ TODO: заполним на этапе X
 
 ## Быстрый старт
 
-TODO: заполним на этапе X
+```bash
+# 1. Скопировать конфиг
+cp .env.example .env
+
+# 2. Поднять всю инфраструктуру
+make docker-up
+
+# 3. Открыть дашборд
+open http://localhost:8501
+
+# 4. Проверить Kafka
+open http://localhost:8080   # Redpanda Console
+
+# 5. Посмотреть логи
+make docker-logs
+```
+
+Компоненты:
+| Сервис | URL |
+|---|---|
+| Dashboard | http://localhost:8501 |
+| Redpanda Console | http://localhost:8080 |
+| Mock OWM API | http://localhost:8081 |
+| NATS Monitor | http://localhost:8222 |
 
 ## Запуск тестов
 
