@@ -1,5 +1,19 @@
 # 🌤️ Weather Pipeline
 
+---
+
+**Лабораторная работа №14** | Вариант 2 | Повышенная сложность
+
+| Поле | Значение |
+|---|---|
+| ФИО | Артюх Виталий Валериевич |
+| Группа | 221131 |
+| Вариант | 2 — Анализ погодных данных (OpenWeatherMap) |
+| Сложность | Повышенная (задания 1–6в) |
+| Дисциплина | Разработка конвейеров обработки данных на Python и Go |
+
+---
+
 [![CI](https://github.com/MrSody71/weather-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/MrSody71/weather-pipeline/actions/workflows/ci.yml)
 [![Go](https://img.shields.io/badge/Go-1.22-00ADD8?logo=go)](https://go.dev)
 [![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python)](https://python.org)
