@@ -4,15 +4,22 @@ import (
 	"fmt"
 	"math/rand"
 	"strings"
+	"sync"
 	"time"
 )
 
 // rng is the package-level random source; initialised by Init (or lazily here).
-var rng = rand.New(rand.NewSource(time.Now().UnixNano()))
+// rngMu guards all accesses to rng — *rand.Rand is not goroutine-safe.
+var (
+	rng   = rand.New(rand.NewSource(time.Now().UnixNano()))
+	rngMu sync.Mutex
+)
 
 // Init seeds the package random source with the given value for reproducibility.
 func Init(seed int64) {
+	rngMu.Lock()
 	rng = rand.New(rand.NewSource(seed))
+	rngMu.Unlock()
 }
 
 // WeatherData holds raw generated weather values (temperatures in Kelvin).
@@ -78,6 +85,7 @@ func descriptionToIcon(desc string) string {
 
 // Generate creates a WeatherData for the given city name and base temperature (Kelvin).
 func Generate(city string, meta CityMeta) WeatherData {
+	rngMu.Lock()
 	temp := meta.BaseTemp + rng.Float64()*6 - 3
 	feelsLike := temp - 2 + rng.Float64()*2 - 1
 	tempMin := temp - rng.Float64()*2
@@ -88,6 +96,7 @@ func Generate(city string, meta CityMeta) WeatherData {
 	windDeg := rng.Intn(361)
 	cloudsAll := rng.Intn(101)
 	desc := descriptions[rng.Intn(len(descriptions))]
+	rngMu.Unlock()
 
 	return WeatherData{
 		CityID:      meta.ID,
