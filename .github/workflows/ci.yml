@@ -105,13 +105,15 @@ jobs:
           echo "Found $count prompt files."
       - name: Scan for leaked secrets
         run: |
-          FOUND=$(grep -r \
+          # Ищем только реальные значения после =
+          # Игнорируем placeholder-значения и сами grep-паттерны
+          FOUND=$(grep -rh \
             --include="*.md" \
-            -E "OWM_API_KEY=['\"]?[a-zA-Z0-9]{20,}" \
+            -E "OWM_API_KEY=['\"]?[a-zA-Z0-9_-]{20,}" \
             prompts/ 2>/dev/null || true)
           if [ -n "$FOUND" ]; then
             echo "::error::Real API key found in prompts/"
             echo "$FOUND"
             exit 1
           fi
-          echo "No leaked secrets found."
+          echo "No leaked secrets in prompts/"
