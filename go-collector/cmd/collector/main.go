@@ -90,8 +90,8 @@ func main() {
 	// --- Goroutines ---
 	if shardManager != nil {
 		go func() {
-			if err := shardManager.Register(ctx); err != nil {
-				logger.Warn("shard register ended", "err", err)
+			if regErr := shardManager.Register(ctx); regErr != nil {
+				logger.Warn("shard register ended", "err", regErr)
 			}
 		}()
 	}

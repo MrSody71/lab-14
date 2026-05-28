@@ -73,7 +73,7 @@ func main() {
 	store := arrinternal.NewStore(maxRecords)
 	flightSvc := arrinternal.NewFlightServer(store)
 
-	srv := flight.NewFlightServer()
+	srv := flight.NewServerWithMiddleware(nil)
 	if err := srv.Init(addr); err != nil {
 		logger.Error("flight server init failed", "err", err)
 		os.Exit(1)
