@@ -1,15 +1,29 @@
 run:
   timeout: 5m
+  go: "1.22"
+
 linters:
+  disable-all: true
   enable:
     - govet
     - staticcheck
-    - errcheck
-    - revive
-    - gocyclo
-    - unused
     - ineffassign
-    - gosec
+    - unused
+    - misspell
+
 linters-settings:
-  gocyclo:
-    min-complexity: 15
+  govet:
+    enable-all: false
+    enable:
+      - shadow
+      - printf
+      - structtag
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - govet
+        - staticcheck
