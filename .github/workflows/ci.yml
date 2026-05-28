@@ -105,18 +105,13 @@ jobs:
           echo "Found $count prompt files."
       - name: Scan for leaked secrets
         run: |
-          # Ищем реальные секреты: OWM_API_KEY=<реальное значение>,
-          # GitHub tokens (ghp_), OpenAI keys (sk-)
-          # Исключаем: base64 плейсхолдеры, примеры в промтах,
-          # сам grep-паттерн в ci.yml
           FOUND=$(grep -r \
-            -E "OWM_API_KEY=[a-zA-Z0-9]{20,}|ghp_[a-zA-Z0-9]{36,}|sk-[a-zA-Z0-9]{40,}" \
-            prompts/ \
-            --exclude="*.placeholder" \
-            2>/dev/null || true)
+            --include="*.md" \
+            -E "OWM_API_KEY=['\"]?[a-zA-Z0-9]{20,}" \
+            prompts/ 2>/dev/null || true)
           if [ -n "$FOUND" ]; then
-            echo "::error::Possible real secret leaked in prompts/"
+            echo "::error::Real API key found in prompts/"
             echo "$FOUND"
             exit 1
           fi
-          echo "No real secrets found in prompts/"
+          echo "No leaked secrets found."

@@ -135,7 +135,7 @@ def sliding_window_stats(
         .with_columns([
             pl.col("avg_temp")
               .rolling_mean(window_size=window_minutes,
-                            min_periods=1)
+                            min_samples=1)
               .over("city")
               .round(2)
               .alias(f"rolling_avg_temp_{window_minutes}w"),
