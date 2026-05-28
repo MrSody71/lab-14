@@ -1,11 +1,12 @@
 """Tests for asyncio fetcher — uses aiohttp test server."""
 import asyncio
 import json
+
+import aiohttp
 import pytest
 from aiohttp import web
 
-from collector.fetcher import fetch_city, fetch_all_cities
-import aiohttp
+from collector.fetcher import fetch_all_cities, fetch_city
 
 
 def make_owm_response(city: str) -> dict:

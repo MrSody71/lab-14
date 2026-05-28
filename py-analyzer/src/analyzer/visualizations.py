@@ -6,15 +6,13 @@ from __future__ import annotations
 
 import logging
 from pathlib import Path
-from typing import Optional
 
 import matplotlib
+
 matplotlib.use("Agg")  # без GUI
 import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
 import plotly.express as px
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 import polars as pl
 
 logger = logging.getLogger(__name__)
@@ -22,7 +20,7 @@ logger = logging.getLogger(__name__)
 OUTPUT_DIR = Path("data/plots")
 
 
-def _ensure_output(path: Optional[Path] = None) -> Path:
+def _ensure_output(path: Path | None = None) -> Path:
     p = path or OUTPUT_DIR
     p.mkdir(parents=True, exist_ok=True)
     return p
@@ -32,8 +30,8 @@ def _ensure_output(path: Optional[Path] = None) -> Path:
 
 def plot_temperature_timeline(
     df: pl.DataFrame,
-    output_dir: Optional[Path] = None,
-    cities: Optional[list[str]] = None,
+    output_dir: Path | None = None,
+    cities: list[str] | None = None,
 ) -> Path:
     """
     Линейный график avg_temp по времени для каждого города.
@@ -71,7 +69,7 @@ def plot_temperature_timeline(
 
 def plot_temperature_histogram(
     df: pl.DataFrame,
-    output_dir: Optional[Path] = None,
+    output_dir: Path | None = None,
 ) -> Path:
     """
     Гистограмма распределения avg_temp по городам.
@@ -113,7 +111,7 @@ def plot_temperature_histogram(
 
 def plot_humidity_heatmap(
     df: pl.DataFrame,
-    output_dir: Optional[Path] = None,
+    output_dir: Path | None = None,
 ) -> Path:
     """
     Тепловая карта: ось X — час суток, ось Y — город,
@@ -161,7 +159,7 @@ def plot_humidity_heatmap(
 
 def plot_performance_comparison(
     results: list[dict],
-    output_dir: Optional[Path] = None,
+    output_dir: Path | None = None,
 ) -> Path:
     """
     Столбчатый график сравнения времени выполнения
@@ -212,7 +210,7 @@ def plot_performance_comparison(
 
 def plot_comfort_index(
     df: pl.DataFrame,
-    output_dir: Optional[Path] = None,
+    output_dir: Path | None = None,
 ) -> Path:
     """Столбчатый график среднего индекса комфорта по городам."""
     out = _ensure_output(output_dir)

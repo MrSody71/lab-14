@@ -1,11 +1,12 @@
 """Tests for DuckDB analytics."""
-import pytest
 from datetime import datetime, timedelta
-import polars as pl
 
+import polars as pl
+import pytest
+
+from analyzer.analytics import WeatherAnalytics
 from analyzer.consumers import WindowAggregate
 from analyzer.transforms import aggregates_to_df, enrich
-from analyzer.analytics import WeatherAnalytics
 
 
 def make_records(n_cities=3, n_windows=10) -> list[WindowAggregate]:

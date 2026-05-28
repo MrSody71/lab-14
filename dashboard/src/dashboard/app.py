@@ -8,21 +8,22 @@ Weather Pipeline Dashboard — главная страница Streamlit.
 from __future__ import annotations
 
 import time
-from datetime import datetime, timedelta
+from datetime import datetime
 
 import polars as pl
 import streamlit as st
 
-from dashboard.data import (
-    DataSource, CITIES, generate_live_row,
-)
 from dashboard.components import (
+    render_comfort_gauges,
+    render_current_temps,
+    render_data_table,
+    render_humidity_wind_scatter,
     render_kpi_cards,
     render_temperature_timeline,
-    render_current_temps,
-    render_humidity_wind_scatter,
-    render_comfort_gauges,
-    render_data_table,
+)
+from dashboard.data import (
+    CITIES,
+    DataSource,
 )
 
 # ── Конфигурация страницы ─────────────────────────────────────────────────

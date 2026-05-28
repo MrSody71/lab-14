@@ -18,10 +18,7 @@ from analyzer.arrow_client import WeatherFlightClient
 
 _BASE = Path(__file__).parent.parent.parent / "arrow-server" / "arrowsrv"
 # Prefer .exe on Windows, fall back to no-extension (explicit -o build)
-if os.name == "nt" and not _BASE.exists():
-    ARROW_SERVER_BIN = _BASE.with_suffix(".exe")
-else:
-    ARROW_SERVER_BIN = _BASE
+ARROW_SERVER_BIN = _BASE.with_suffix(".exe") if os.name == "nt" and not _BASE.exists() else _BASE
 
 
 @pytest.fixture(scope="module")

@@ -1,8 +1,9 @@
 """Tests for validator.py — Polars DataFrame validation pipeline."""
 import time
+
 import polars as pl
-import pytest
-from analyzer.validator import validate_dataframe, ValidationReport
+
+from analyzer.validator import validate_dataframe
 
 NOW = int(time.time())
 

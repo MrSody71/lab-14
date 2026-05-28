@@ -5,14 +5,11 @@ Streamlit-компоненты для weather pipeline дашборда.
 from __future__ import annotations
 
 from datetime import datetime, timedelta
-from typing import Optional
 
 import plotly.express as px
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 import polars as pl
 import streamlit as st
-
 
 # ── Цветовая схема ────────────────────────────────────────────────────────
 
@@ -263,6 +260,7 @@ def render_comfort_gauges(
         latest.filter(
             pl.col("city").is_in(show_cities)
         ).iter_rows(named=True),
+        strict=False,
     ):
         comfort = row["comfort"]
         color = (

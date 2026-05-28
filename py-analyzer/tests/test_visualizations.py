@@ -1,17 +1,17 @@
 """Tests for visualization module — checks files are created."""
-import pytest
 from datetime import datetime, timedelta
-from pathlib import Path
+
 import polars as pl
+import pytest
 
 from analyzer.consumers import WindowAggregate
 from analyzer.transforms import aggregates_to_df, enrich
 from analyzer.visualizations import (
-    plot_temperature_timeline,
-    plot_temperature_histogram,
+    plot_comfort_index,
     plot_humidity_heatmap,
     plot_performance_comparison,
-    plot_comfort_index,
+    plot_temperature_histogram,
+    plot_temperature_timeline,
 )
 
 

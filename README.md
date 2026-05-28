@@ -1,4 +1,10 @@
-# Weather Pipeline
+# 🌤️ Weather Pipeline
+
+[![CI](https://github.com/MrSody71/weather-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/MrSody71/weather-pipeline/actions/workflows/ci.yml)
+[![Go](https://img.shields.io/badge/Go-1.22-00ADD8?logo=go)](https://go.dev)
+[![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python)](https://python.org)
+[![Rust](https://img.shields.io/badge/Rust-stable-CE422B?logo=rust)](https://rust-lang.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ## Цель работы
 

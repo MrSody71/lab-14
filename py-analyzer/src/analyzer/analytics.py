@@ -7,7 +7,6 @@ from __future__ import annotations
 import logging
 import time
 from pathlib import Path
-from typing import Union
 
 import duckdb
 import polars as pl
@@ -15,7 +14,7 @@ import polars as pl
 logger = logging.getLogger(__name__)
 
 # Тип: путь к parquet или уже загруженный DataFrame
-DataSource = Union[str, Path, pl.DataFrame]
+DataSource = str | Path | pl.DataFrame
 
 
 def _get_source_expr(source: DataSource, conn: duckdb.DuckDBPyConnection) -> str:
@@ -39,7 +38,7 @@ class WeatherAnalytics:
     def close(self) -> None:
         self._conn.close()
 
-    def __enter__(self) -> "WeatherAnalytics":
+    def __enter__(self) -> WeatherAnalytics:
         return self
 
     def __exit__(self, *_: object) -> None:

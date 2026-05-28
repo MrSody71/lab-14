@@ -5,35 +5,36 @@
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import logging
 import os
 import signal
-import time
 from pathlib import Path
-from typing import Optional
 
-import polars as pl
 from rich.console import Console
-from rich.table import Table
-from rich.live import Live
 from rich.panel import Panel
+from rich.table import Table
 
+from analyzer.analytics import WeatherAnalytics
 from analyzer.consumers import (
-    WindowAggregate, kafka_consumer,
-    nats_consumer, mock_consumer,
+    WindowAggregate,
+    kafka_consumer,
+    mock_consumer,
+    nats_consumer,
 )
 from analyzer.transforms import (
-    aggregates_to_df, enrich, city_summary,
-    sliding_window_stats, append_parquet, load_parquet,
+    aggregates_to_df,
+    append_parquet,
+    enrich,
+    load_parquet,
 )
-from analyzer.analytics import WeatherAnalytics
-from analyzer.validator import validate_dataframe, ValidationReport
+from analyzer.validator import ValidationReport, validate_dataframe
 from analyzer.visualizations import (
-    plot_temperature_timeline,
-    plot_temperature_histogram,
+    plot_comfort_index,
     plot_humidity_heatmap,
     plot_performance_comparison,
-    plot_comfort_index,
+    plot_temperature_histogram,
+    plot_temperature_timeline,
 )
 
 logger = logging.getLogger(__name__)
@@ -49,12 +50,12 @@ class WeatherPipeline:
 
     def __init__(
         self,
-        kafka_brokers: Optional[list[str]] = None,
+        kafka_brokers: list[str] | None = None,
         kafka_topic: str = "weather.raw",
-        nats_url: Optional[str] = None,
+        nats_url: str | None = None,
         nats_subject: str = "weather.raw",
         use_mock: bool = False,
-        mock_cities: Optional[list[str]] = None,
+        mock_cities: list[str] | None = None,
     ) -> None:
         self.kafka_brokers = kafka_brokers
         self.kafka_topic = kafka_topic
@@ -107,12 +108,8 @@ class WeatherPipeline:
         # Обработчик сигналов
         loop = asyncio.get_event_loop()
         for sig in (signal.SIGINT, signal.SIGTERM):
-            try:
-                loop.add_signal_handler(
-                    sig, lambda: self._stop.set()
-                )
-            except NotImplementedError:
-                pass  # Windows
+            with contextlib.suppress(NotImplementedError):  # Windows
+                loop.add_signal_handler(sig, lambda: self._stop.set())
 
         # Главный цикл обработки
         tasks.append(asyncio.create_task(self._process_loop()))
@@ -140,7 +137,7 @@ class WeatherPipeline:
                 if len(self._buffer) >= FLUSH_EVERY:
                     await self._flush()
 
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 if self._buffer:
                     await self._flush()
 

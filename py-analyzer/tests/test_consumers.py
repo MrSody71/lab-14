@@ -1,7 +1,9 @@
 """Unit tests for consumers — no real brokers needed."""
 import asyncio
 from datetime import datetime
+
 import pytest
+
 from analyzer.consumers import WindowAggregate, mock_consumer
 
 

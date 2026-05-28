@@ -9,7 +9,6 @@ import pytest
 
 from analyzer.arrow_client import WeatherFlightClient, _empty_df
 
-
 # ── Минимальный in-process Flight сервер для тестов ──────────────────────
 
 class _MockFlightServer(flight.FlightServerBase):

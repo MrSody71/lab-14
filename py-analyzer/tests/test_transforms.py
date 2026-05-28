@@ -1,15 +1,18 @@
 """Tests for Polars transforms."""
+from datetime import datetime, timedelta
+
 import polars as pl
 import pytest
-from datetime import datetime, timedelta
-from pathlib import Path
-import tempfile
 
 from analyzer.consumers import WindowAggregate
 from analyzer.transforms import (
-    aggregates_to_df, enrich, city_summary,
-    sliding_window_stats, save_parquet, load_parquet,
+    aggregates_to_df,
     append_parquet,
+    city_summary,
+    enrich,
+    load_parquet,
+    save_parquet,
+    sliding_window_stats,
 )
 
 

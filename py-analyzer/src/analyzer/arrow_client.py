@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import logging
-from typing import Optional
 
 import polars as pl
 import pyarrow as pa
@@ -17,7 +16,7 @@ class WeatherFlightClient:
 
     def __init__(self, host: str = "localhost", port: int = 8815) -> None:
         self._addr = f"grpc://{host}:{port}"
-        self._client: Optional[flight.FlightClient] = None
+        self._client: flight.FlightClient | None = None
 
     def connect(self) -> None:
         """Установить соединение с Flight сервером."""
@@ -29,7 +28,7 @@ class WeatherFlightClient:
             self._client.close()
             self._client = None
 
-    def __enter__(self) -> "WeatherFlightClient":
+    def __enter__(self) -> WeatherFlightClient:
         self.connect()
         return self
 

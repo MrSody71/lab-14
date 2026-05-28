@@ -4,12 +4,10 @@
 from __future__ import annotations
 
 import asyncio
-import json
 import logging
 import time
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 from datetime import datetime
-from typing import Optional
 
 import aiohttp
 
@@ -28,7 +26,7 @@ class WeatherReading:
     description: str
     collected_at: str   # ISO datetime
     response_time_ms: float
-    error: Optional[str] = None
+    error: str | None = None
 
     def to_dict(self) -> dict:
         return asdict(self)

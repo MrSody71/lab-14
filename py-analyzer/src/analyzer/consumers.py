@@ -5,6 +5,7 @@ Kafka и NATS консьюмеры для weather pipeline.
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import json
 import logging
 from dataclasses import dataclass
@@ -29,7 +30,7 @@ class WindowAggregate:
     shard_id: str
 
     @classmethod
-    def from_dict(cls, d: dict) -> "WindowAggregate":
+    def from_dict(cls, d: dict) -> WindowAggregate:
         def parse_dt(v: str | int | float) -> datetime:
             if isinstance(v, (int, float)):
                 return datetime.utcfromtimestamp(v)
@@ -81,7 +82,7 @@ async def kafka_consumer(
     Останавливается когда stop_event установлен.
     """
     try:
-        from kafka import KafkaConsumer as _KC
+        from kafka import KafkaConsumer as _KC  # noqa: N814
     except ImportError:
         logger.error("kafka-python not installed")
         return
@@ -114,10 +115,8 @@ async def kafka_consumer(
         except Exception as e:
             logger.warning("Kafka consumer error: %s. Retry in 5s", e)
             if consumer is not None:
-                try:
+                with contextlib.suppress(Exception):
                     consumer.close()
-                except Exception:
-                    pass
             await asyncio.sleep(5)
 
 
@@ -172,7 +171,7 @@ async def nats_consumer(
                     data = json.loads(msg.data.decode())
                     agg = WindowAggregate.from_dict(data)
                     await queue.put(agg)
-                except asyncio.TimeoutError:
+                except TimeoutError:
                     continue
                 except Exception as e:
                     logger.warning("NATS message error: %s", e)
@@ -180,10 +179,8 @@ async def nats_consumer(
         except Exception as e:
             logger.warning("NATS consumer error: %s. Retry in 5s", e)
             if nc is not None:
-                try:
+                with contextlib.suppress(Exception):
                     await nc.close()
-                except Exception:
-                    pass
             await asyncio.sleep(5)
 
 

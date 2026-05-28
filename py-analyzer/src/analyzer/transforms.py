@@ -5,14 +5,11 @@ Polars-трансформации для weather pipeline.
 from __future__ import annotations
 
 import logging
-from datetime import datetime
 from pathlib import Path
-from typing import Optional
 
 import polars as pl
 
 from analyzer.consumers import WindowAggregate
-from analyzer.validator import validate_dataframe
 
 logger = logging.getLogger(__name__)
 
@@ -179,10 +176,7 @@ def append_parquet(
     """
     existing = load_parquet(path)
     new_df = aggregates_to_df(new_records)
-    if len(existing) == 0:
-        combined = new_df
-    else:
-        combined = pl.concat([existing, new_df], how="diagonal")
+    combined = new_df if len(existing) == 0 else pl.concat([existing, new_df], how="diagonal")
 
     # Дедупликация: оставить последнюю запись на (city, window_start)
     deduped = (

@@ -1,19 +1,17 @@
 """Smoke-тесты компонентов — проверяем что не падают."""
+# Мокаем streamlit чтобы тесты работали без GUI
+import sys
+from unittest.mock import MagicMock
+
 import pytest
-import polars as pl
-from datetime import datetime, timedelta
-from unittest.mock import MagicMock, patch
 
 from dashboard.data import generate_mock_batch
 
-
-# Мокаем streamlit чтобы тесты работали без GUI
-import sys
 _st_mock = MagicMock()
 _st_mock.columns.side_effect = lambda n: [MagicMock() for _ in range(n)]
 sys.modules["streamlit"] = _st_mock
 
-from dashboard import components
+from dashboard import components  # noqa: E402
 
 
 @pytest.fixture()

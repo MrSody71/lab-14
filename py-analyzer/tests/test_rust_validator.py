@@ -1,5 +1,6 @@
 """Tests for Rust weather_validator module (via PyO3)."""
 import time
+
 import pytest
 
 try:

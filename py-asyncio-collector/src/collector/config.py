@@ -15,7 +15,7 @@ class Config:
     output_file: str        # куда писать JSONL
 
     @classmethod
-    def load(cls) -> "Config":
+    def load(cls) -> Config:
         return cls(
             mock_owm_url=os.getenv(
                 "OWM_MOCK_URL", "http://localhost:8081"

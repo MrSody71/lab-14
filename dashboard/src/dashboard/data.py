@@ -4,17 +4,14 @@
 """
 from __future__ import annotations
 
-import asyncio
 import json
 import logging
 import os
 import random
 import time
-from dataclasses import dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
 from threading import Thread
-from typing import Callable, Optional
 
 import polars as pl
 
@@ -86,7 +83,6 @@ def generate_mock_batch(
         for city in cities:
             base = CITY_BASE_TEMPS.get(city, 10.0)
             # Суточный цикл температуры
-            hour_offset = (i / 60) * 2 * 3.14159
             daily_cycle = 3.0 * (
                 (window_start.hour - 14) / 12
             )
@@ -165,7 +161,7 @@ class KafkaLiveSource:
         self._max_rows = max_rows
         self._rows: list[dict] = []
         self._running  = False
-        self._thread: Optional[Thread] = None
+        self._thread: Thread | None = None
 
     def start(self) -> None:
         self._running = True
@@ -245,7 +241,7 @@ class DataSource:
     """
 
     def __init__(self) -> None:
-        self._kafka: Optional[KafkaLiveSource] = None
+        self._kafka: KafkaLiveSource | None = None
         self._mode = self._detect_mode()
         logger.info("DataSource mode: %s", self._mode)
 

@@ -8,7 +8,6 @@ from __future__ import annotations
 import logging
 import time
 from dataclasses import dataclass, field
-from typing import Optional
 
 import polars as pl
 
@@ -51,7 +50,7 @@ class ValidationReport:
 
 def validate_dataframe(
     df: pl.DataFrame,
-    now_unix: Optional[int] = None,
+    now_unix: int | None = None,
 ) -> tuple[pl.DataFrame, ValidationReport]:
     """
     Валидирует DataFrame с погодными показаниями.

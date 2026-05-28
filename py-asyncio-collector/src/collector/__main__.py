@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import json
 import logging
 import signal
@@ -50,12 +51,8 @@ async def main() -> None:
     stop = asyncio.Event()
 
     for sig in (signal.SIGINT, signal.SIGTERM):
-        try:
-            asyncio.get_event_loop().add_signal_handler(
-                sig, stop.set
-            )
-        except NotImplementedError:
-            pass
+        with contextlib.suppress(NotImplementedError):  # Windows
+            asyncio.get_event_loop().add_signal_handler(sig, stop.set)
 
     output = Path(cfg.output_file)
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -86,13 +83,11 @@ async def main() -> None:
                 stats["avg_response_ms"],
             )
 
-            try:
+            with contextlib.suppress(TimeoutError):
                 await asyncio.wait_for(
                     stop.wait(),
                     timeout=cfg.poll_interval_sec,
                 )
-            except asyncio.TimeoutError:
-                pass
 
     logger.info("Collector stopped. Rounds: %d", rounds)
 

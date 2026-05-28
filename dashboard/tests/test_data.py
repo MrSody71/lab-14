@@ -1,10 +1,13 @@
 """Tests for dashboard data layer."""
-import polars as pl
-import pytest
 from datetime import datetime
+
 from dashboard.data import (
-    generate_mock_batch, generate_live_row,
-    empty_df, _parse_aggregate, DataSource, SCHEMA,
+    SCHEMA,
+    DataSource,
+    _parse_aggregate,
+    empty_df,
+    generate_live_row,
+    generate_mock_batch,
 )
 
 
@@ -40,7 +43,7 @@ def test_generate_live_row():
 def test_empty_df_schema():
     df = empty_df()
     assert len(df) == 0
-    for col, dtype in SCHEMA.items():
+    for col, _dtype in SCHEMA.items():
         assert col in df.columns
 
 
